@@ -2,17 +2,22 @@
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     </button>
-    <ion-title>Home</ion-title>
+    <ion-title class='configureNavBar'>Rider App Demo</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+  <!-- <h3>Ionic Menu Starter</h3>
 
   <p>
     If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
   </p>
 
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+  <button ion-button secondary menuToggle>Toggle Menu</button> -->
+  <!-- <div> -->
+    <div #map id='map'></div>
+    <button id='btnBook' ion-button (click) = 'onBookButtonClick()'>Book a trip</button>
+<!-- </div> -->
 </ion-content>

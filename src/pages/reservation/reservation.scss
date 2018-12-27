@@ -1,0 +1,39 @@
+page-reservation {
+    .container{
+        background-color: whitesmoke;
+        font-size: 17px !important;
+        #btnBookNow {
+            width: 100%;
+            // margin: 16px auto !important;
+            // background-color: red;
+            // border-radius: 100px;
+        }
+        .seat-type-table {
+            .table-icons{
+                background-color: #C0D2E7;
+            }
+            .seat-label {
+                background-color: whitesmoke;
+                text-indent: 5px;
+            }
+            .table-content{
+                background-color: #CEE1F4;
+            }
+            .seat-no{
+                font-size: 25px
+            }
+        }
+        .no-border-bottom {
+            .item-inner{
+                border-bottom: 0px !important;
+            }
+        }
+        .border-right{
+            border-right: 1px solid gray;
+        }
+
+        .icon {
+            color: #3A6992;
+        }
+    }
+}

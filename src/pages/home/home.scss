@@ -1,3 +1,24 @@
-page-home {
+.configureNavBar {
+    background-color: #5B8BC4;
+    .toolbar-title-ios{
+        color: white;
+    }
+}
 
+.bar-button-default-ios,
+.bar-button-default.bar-button-ios-default,
+.bar-button-clear-ios-default,
+.bar-button-menutoggle-ios{
+    color: white;
+}
+
+page-home {
+    #map {
+        width: 100%;
+        height: 90%;
+    }
+    #btnBook {
+        width: 100%;
+        margin: 10px 0;
+    }
 }
