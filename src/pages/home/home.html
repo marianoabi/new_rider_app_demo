@@ -18,6 +18,18 @@
   <button ion-button secondary menuToggle>Toggle Menu</button> -->
   <!-- <div> -->
     <div #map id='map'></div>
+
+    <!-- <ion-list>
+        <ion-item-sliding *ngFor="let item of routeList">
+          <ion-item>
+            {{ item.$name }}
+          </ion-item>
+          <ion-item-options side="right">
+            <button ion-button color="danger" icon-only (click)="removeItem(item.$key)"><ion-icon name="trash"></ion-icon></button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list> -->
+
     <button id='btnBook' ion-button (click) = 'onBookButtonClick()'>Book a trip</button>
 <!-- </div> -->
 </ion-content>

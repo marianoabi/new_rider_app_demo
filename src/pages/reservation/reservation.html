@@ -16,83 +16,64 @@
   <ion-item>
     <ion-icon item-start name='calendar'></ion-icon>
     <ion-label>Date</ion-label>
-    <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="event.month"></ion-datetime>
+    <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="Booking.date"></ion-datetime>
   </ion-item>
 
   <ion-item>
     <ion-icon item-start name='bus'></ion-icon>
     <ion-label>Route</ion-label>
-    <ion-select interface="action-sheet" (ionChange)="onPickupChange()">
+    <ion-select interface="action-sheet" (ionChange)="onRouteChange(Booking.routeName)" [(ngModel)]="Booking.routeName">
       <ion-option *ngFor = 'let route of Routes'>{{route.name}}</ion-option>
     </ion-select>
   </ion-item>
 
   <ion-item>
-    <ion-icon item-start name='time'></ion-icon>
-    <ion-label>Shuttle Time</ion-label>
-    <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>
-  </ion-item>
-
-  <ion-item>
-    <ion-icon item-start name='navigate'></ion-icon>
+    <ion-icon item-start name='pin'></ion-icon>
     <ion-label>Pickup Stop</ion-label>
     <!-- <ion-select *ngFor = 'let route of Routes' interface="action-sheet"> -->
-    <ion-select interface="action-sheet">
-      <div *ngFor = 'let route of Routes'>
-        <ion-option *ngFor = 'let station of route.stations'>{{ station.station }}</ion-option>
-      </div>
+    <ion-select interface="action-sheet" (ionChange)="onPickupChange(Booking.pickup)" [(ngModel)]="Booking.pickup">
+        <ion-option *ngFor = 'let station of selectedRoutePickupStations'>{{ station.name }}</ion-option>
     </ion-select>
     <!-- <ion-select interface="action-sheet">
       <ion-option *ngFor = 'let route of Routes'>{{ route.stations.station }}</ion-option>
     </ion-select> -->
   </ion-item>
 
-  <ion-item class="no-border-bottom" margin-bottom>
+  <ion-item>
     <ion-icon item-start name='navigate'></ion-icon>
     <ion-label>Dropoff Stop</ion-label>
-    <ion-select interface="action-sheet">
-      <div *ngFor = 'let route of Routes'>
-        <ion-option *ngFor = 'let station of route.stations'>{{ station.station }}</ion-option>
-      </div>
+    <ion-select interface="action-sheet" [(ngModel)]="Booking.dropoff">
+        <ion-option *ngFor = 'let station of selectedRouteDropoffStations'>{{ station.name }}</ion-option>
     </ion-select>
   </ion-item>
-
-  <ion-item>
-    <ion-icon item-start name='contact'></ion-icon>
-    <ion-input placeholder='Name'></ion-input>
+  
+  <ion-item class="no-border-bottom" margin-bottom>
+    <ion-icon item-start name='time'></ion-icon>
+    <ion-label>Shuttle Time</ion-label>
+    <!-- <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="Booking.time"></ion-datetime> -->
+    <ion-datetime displayFormat="hh:mm" hourValues={{Hours}} minuteValues={{Minute}} [(ngModel)]="Booking.alertTime"></ion-datetime>
   </ion-item>
 
-  <ion-item>
+  <ion-item class="no-border-bottom" margin-bottom>
     <ion-icon item-start name='heart'></ion-icon>
-    <ion-label>Seat Type</ion-label>
-    <ion-select interface="action-sheet">
-      <ion-option>Wheelchair</ion-option>
-      <ion-option>Non-Wheelchair</ion-option>
-    </ion-select>
+    <ion-label>Wheelchair Seats</ion-label>
+    <ion-checkbox item-end color="default" checked="false" [(ngModel)]="Booking.wheelchairBool"></ion-checkbox>
   </ion-item>
- 
+
   <ion-item class="no-border-bottom">
     <ion-icon item-start name='heart'></ion-icon>
-    <ion-input placeholder='Contact number'></ion-input>
+    <ion-label>Carer</ion-label>
+    <ion-checkbox item-end color="default" checked="false" [(ngModel)]="Booking.carerBool"></ion-checkbox>
   </ion-item>
 
-    <ion-grid class="seat-type-table">
-      <ion-row>
-        <ion-col col-12 class="seat-label"><ion-label>Remaining Seat Capacity</ion-label></ion-col>
-      </ion-row>
-      <ion-row class="table-icons">
-        <ion-col col-6 text-center class="border-right"><ion-icon name="heart"></ion-icon></ion-col>
-        <ion-col col-6 text-center><ion-icon name="heart"></ion-icon></ion-col>
-      </ion-row>
-      <ion-row class="table-content seat-no">
-        <ion-col col-6 text-center class="border-right">1</ion-col>
-        <ion-col col-6 text-center>2</ion-col>
-      </ion-row>
-      <ion-row class="table-content">
-        <ion-col col-6 text-center class="border-right">Wheelchair</ion-col>
-        <ion-col col-6 text-center>Non-Wheelchair</ion-col>
-      </ion-row>
-    </ion-grid>
+  <ion-label class='custom-label'>Remaining Seat Capacity:</ion-label>
 
-  <button id='btnBookNow' ion-button block (click)='onBookNow()'>Book Now</button>
+  <ion-grid class="seat-type-table">
+    <ion-row class="table-icons">
+      <ion-col col-6 item-start class="border-right custom-col"><ion-icon name="heart"></ion-icon></ion-col>
+      <ion-col col-6 item-start class='custom-col'><ion-icon name="heart"></ion-icon></ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <button id='btnBookNow' ion-button block (click)='goToConfirmPage(Booking)'>Book Now</button>
 </ion-content>

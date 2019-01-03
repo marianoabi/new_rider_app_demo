@@ -86,7 +86,8 @@
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="To know your current location" />
     </plugin>
     <plugin name="cordova-sqlite-storage" spec="2.6.0" />
-    <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">	
-    <string>This App wants to know your location</string>	
-</edit-config>	
+    <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
+        <string>This App wants to know your location</string>
+    </edit-config>
+    <engine name="ios" spec="4.5.5" />
 </widget>

@@ -12,16 +12,37 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Geolocation } from '@ionic-native/geolocation';
 import { IonicStorageModule } from '@ionic/storage';
 import { ReservationPage } from '../pages/reservation/reservation';
+import { BookingModalPage } from '../pages/booking-modal/booking-modal';
+
+import { HttpModule } from '@angular/http';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireModule } from 'angularfire2';
+import { FirebaseProvider } from './../providers/firebase/firebase';
+import { ConfirmationPage } from '../pages/confirmation/confirmation';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyClT4eKkAOaKeP9Yk9VBI-C8pqeVr04gUw",
+  authDomain: "rider-app-demo-1545033568387.firebaseapp.com",
+  databaseURL: "https://rider-app-demo-1545033568387.firebaseio.com",
+  projectId: "rider-app-demo-1545033568387",
+  storageBucket: "rider-app-demo-1545033568387.appspot.com",
+  messagingSenderId: "678080157388"
+};
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     ListPage,
-    ReservationPage
+    ReservationPage,
+    BookingModalPage,
+    ConfirmationPage
   ],
   imports: [
     BrowserModule,
+    HttpModule,
+    AngularFireDatabaseModule,
+    AngularFireModule.initializeApp(firebaseConfig),
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
   ],
@@ -30,13 +51,16 @@ import { ReservationPage } from '../pages/reservation/reservation';
     MyApp,
     HomePage,
     ListPage,
-    ReservationPage
+    ReservationPage,
+    BookingModalPage,
+    ConfirmationPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    Geolocation
+    Geolocation,
+    FirebaseProvider
   ]
 })
 export class AppModule {}

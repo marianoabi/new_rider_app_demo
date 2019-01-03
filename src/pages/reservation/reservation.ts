@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ModalController, LoadingController } from 'ionic-angular';
 
-import { HomePage } from '../home/home';
-// import {RouteModel} from '../../models/RouteModel';
+import { BookingModalPage } from '../booking-modal/booking-modal';
+import { Storage } from '@ionic/storage';
+
+import { ConfirmationPage } from '../confirmation/confirmation';
 
 /**
  * Generated class for the ReservationPage page.
@@ -17,226 +19,372 @@ import { HomePage } from '../home/home';
   templateUrl: 'reservation.html',
 })
 export class ReservationPage {
-  public event = {
-    month: '',
-    timeStarts: '',
-    timeEnds: ''
-  }
 
+  //init varibales
+  selectedRoute = { name: '', stations: []};
+  selectedRoutePickupStations = [];
+  selectedRouteDropoffStations = [];
+  selectedPickUpStation = {time: '' };
+
+  //data
   Routes = [
         {
         name:'Shek Pai Wan/Aberdeen',
         stations:[
             {
-                status: ['pickup'],
-                station: 'Fu Hong Society Rehabilitation Centre',
-                time: ''
+                type: 'pickup',
+                name: 'Fu Hong Society Rehabilitation Centre',
+                coordinate: '22.24991,114.15923299999997',
+                time: '55'
             },
             {
-                status: ['pickup'],
-                station: 'Pik Yuet House, Shek Pai Wan Estate',
-                time: ''
+                type: 'pickup',
+                name: 'Pik Yuet House, Shek Pai Wan Estate',
+                coordinate: '22.248953,114.15726700000005',
+                time: '56'
             },
             {
-                status: ['pickup'],
-                station: 'On Fai House, Yue Fai Court',
-                time: ''
+                type: 'pickup',
+                name: 'On Fai House, Yue Fai Court',
+                coordinate: '22.2499061,114.15694699999995',
+                time: '57'
             },
             {
-                status: ['pickup'],
-                station: '7-Eleven, Nam Ning Street, Aberdeen Centre',
-                time: ''
+                type: 'pickup',
+                name: '7-Eleven, Nam Ning Street, Aberdeen Centre',
+                coordinate: '22.2477689,114.15500099999997',
+                time: '00'
             },
             {
-                status: ['pickup'],
-                station: '7-Eleven, Nam Ning Street, Aberdeen Centre',
-                time: ''
+                type: 'pickup',
+                name: 'Chinese Culinary Institute',
+                coordinate: '22.259876,114.13559800000007',
+                time: '05'
             },
             {
-                status: ['pickup', 'dropoff'],
-                station: 'Block K, Queen Mary Hospital',
-                time: ''
+                type: 'pickup/dropoff',
+                name: 'Block K, Queen Mary Hospital',
+                coordinate: '22.270256,114.1313781',
+                time: '20'
             },
             {
-                status: ['pickup', 'dropoff'],
-                station: 'Fung Yiu King Hospital',
-                time: ''
+                type: 'pickup/dropoff',
+                name: 'Fung Yiu King Hospital',
+                coordinate: '22.2714702,114.12484840000002',
+                time: '27'
             },
             {
-                status: ['pickup', 'dropoff'],
-                station: 'The Duchess of Kent Children’s Hospital',
-                time: ''
+                type: 'pickup/dropoff',
+                name: 'The Duchess of Kent Children’s Hospital',
+                coordinate: '22.2711318,114.12344410000003',
+                time: '27'
             },
             {
-                status: ['pickup', 'dropoff'],
-                station: 'MacLehose Rehabilitation Hospital',
-                time: ''
+                type: 'pickup/dropoff',
+                name: 'MacLehose Rehabilitation Hospital',
+                coordinate: '22.269896,114.12425200000007',
+                time: '29'
             },
             {
-                status: ['dropoff'],
-                station: 'Bus Stop, Pokfulam Village',
-                time: ''
+                type: 'dropoff',
+                name: 'Bus Stop, Pokfulam Village',
+                coordinate: '22.260234,114.13668800000005',
+                time: '35'
             },
             {
-                status: ['dropoff'],
-                station: '7-Eleven, Nam Ning Street, Aberdeen Centre',
-                time: ''
+                type: 'dropoff',
+                name: '7-Eleven, Nam Ning Street, Aberdeen Centre',
+                coordinate: '22.2477689,114.15500099999997',
+                time: '40'
+            },
+            {
+                type: 'dropoff',
+                name: 'Fu Hong Society Rehabilitation Centre',
+                coordinate: '22.24991,114.15923299999997',
+                time: '43'
+            },
+            {
+                type: 'dropoff',
+                name: 'Pik Yuet House, Shek Pai Wan Estate',
+                coordinate: '22.248953,114.15726700000005',
+                time: '45'
+            },
+            {
+                type: 'dropoff',
+                name: 'On Fai House, Yue Fai Court',
+                coordinate: '22.2499061,114.15694699999995',
+                time: '50'
             }]
         },
         {
             name:'Chi Fu/Wah Fu',
             stations:[
             {
-                status: ['pickup'],
-                station: 'Bus Stop, Block 1 Chi Fu Fa Yuen',
-                time: ''
+                type: 'pickup',
+                name: 'Bus Stop, Block 1 Chi Fu Fa Yuen',
+                coordinate: '22.255534,114.13980400000003',
+                time: '40'
             },
             {
-                status: ['pickup'],
-                station: 'Bus Terminal, Chi Fu Fa Yuen',
-                time: ''
+                type: 'pickup',
+                name: 'Bus Terminal, Chi Fu Fa Yuen',
+                coordinate: '22.258404,114.13884499999995',
+                time: '41'
             },
             {
-                status: ['pickup'],
-                station: 'Wah Lok House, Wah Fu Estate',
-                time: ''
+                type: 'pickup',
+                name: 'Wah Lok House, Wah Fu Estate',
+                coordinate: '22.251702,114.13870300000008',
+                time: '45'
             },
             {
-                status: ['pickup'],
-                station: 'Wah Mei House, Wah Fu Estate',
-                time: ''
+                type: 'pickup',
+                name: 'Wah Mei House, Wah Fu Estate',
+                coordinate: '22.249564,114.13682879999999',
+                time: '46'
             },
             {
-                status: ['pickup'],
-                station: 'Waterfall Bay Park, Wah Fu Estate',
-                time: ''
+                type: 'pickup',
+                name: 'Waterfall Bay Park, Wah Fu Estate',
+                coordinate: '22.2503633,114.13482090000002',
+                time: '47'
             },
             {
-                status: ['pickup'],
-                station: 'Bus Terminal, Wah Fu (2) Estate',
-                time: ''
+                type: 'pickup',
+                name: 'Bus Terminal, Wah Fu (2) Estate',
+                coordinate: '22.2519161,114.13967320000006',
+                time: '49'
             },
             {
-                status: ['pickup'],
-                station: 'Wah Hing House, Wah Fu Estate',
-                time: ''
+                type: 'pickup',
+                name: 'Wah Hing House, Wah Fu Estate',
+                coordinate: '22.2524823,114.13643400000001',
+                time: '50'
             },
             {
-                status: ['pickup', 'dropoff'],
-                station: 'Fung Yiu King Hospital',
-                time: ''
+                type: 'pickup/dropoff',
+                name: 'Fung Yiu King Hospital',
+                coordinate: '22.2714702,114.12484840000002',
+                time: '00'
             },
             {
-                status: ['pickup', 'dropoff'],
-                station: 'The Duchess of Kent Children’s Hospital',
-                time: ''
+                type: 'pickup/dropoff',
+                name: 'The Duchess of Kent Children’s Hospital',
+                coordinate: '22.2711318,114.12344410000003',
+                time: '00'
             },
             {
-                status: ['pickup','dropoff'],
-                station: 'MacLehose Rehabilitation Hospital',
-                time: ''
+                type: 'pickup/dropoff',
+                name: 'MacLehose Rehabilitation Hospital',
+                coordinate: '22.269896,114.12425200000007',
+                time: '02'
             },
             {
-                status: ['pickup','dropoff'],
-                station: 'Block K, Queen Mary Hospital',
-                time: ''
+                type: 'pickup/dropoff',
+                name: 'Block K, Queen Mary Hospital',
+                coordinate: '22.270256,114.1313781',
+                time: '10'
             }]   
         },
         {
             name:'Wah Kwai/Tin Wan',
             stations:[
             {
-                status: ['pickup'],
-                station: 'Wah Kwai Shopping Centre, Wah Kwai Estate',
-                time: ''
+                type: 'pickup',
+                name: 'Wah Kwai Shopping Centre, Wah Kwai Estate',
+                coordinate: '22.2498765,114.13910809999993',
+                time: '55'
             },
             {
-                status: ['pickup'],
-                station: 'Bank of China (HK), Tin Wan Street',
-                time: ''
+                type: 'pickup',
+                name: 'Bank of China (HK), Tin Wan Street',
+                coordinate: '22.249662,114.14904200000001',
+                time: '05'
             },
             {
-                status: ['pickup'],
-                station: 'Tin Chak House, Tin Wan Estate',
-                time: ''
+                type: 'pickup',
+                name: 'Tin Chak House, Tin Wan Estate',
+                coordinate: '22.252499,114.15069900000003',
+                time: '10'
             },
             {
-                status: ['pickup'],
-                station: 'Bus Stop, Tin Wan Shopping Centre',
-                time: ''
+                type: 'pickup',
+                name: 'Bus Stop, Tin Wan Shopping Centre',
+                coordinate: '22.251088,114.14972899999998',
+                time: '15'
             },
             {
-                status: ['pickup', 'dropoff'],
-                station: 'Block K, Queen Mary Hospital',
-                time: ''
+                type: 'pickup/dropoff',
+                name: 'Block K, Queen Mary Hospital',
+                coordinate: '22.270256,114.1313781',
+                time: '25'
             },
             {
-                status: ['pickup', 'dropoff'],
-                station: 'Fung Yiu King Hospital',
-                time: ''
+                type: 'pickup/dropoff',
+                name: 'Fung Yiu King Hospital',
+                coordinate: '22.2714702,114.12484840000002',
+                time: '32'
             },
             {
-                status: ['pickup', 'dropoff'],
-                station: 'The Duchess of Kent Children’s Hospital',
-                time: ''
+                type: 'pickup/dropoff',
+                name: 'The Duchess of Kent Children’s Hospital',
+                coordinate: '22.2711318,114.12344410000003',
+                time: '32'
             },
             {
-                status: ['pickup', 'dropoff'],
-                station: 'MacLehose Rehabilitation Hospital',
-                time: ''
+                type: 'pickup/dropoff',
+                name: 'MacLehose Rehabilitation Hospital',
+                coordinate: '22.269896,114.12425200000007',
+                time: '34'
             },
             {
-                status: ['dropoff'],
-                station: 'Bank of China (HK), Tin Wan Street',
-                time: ''
+                type: 'dropoff',
+                name: 'Bank of China (HK), Tin Wan Street',
+                coordinate: '22.249662,114.14904200000001',
+                time: '42'
             },
             {
-                status: ['dropoff'],
-                station: 'Tin Chak House, Tin Wan Estate',
-                time: ''
+                type: 'dropoff',
+                name: 'Tin Chak House, Tin Wan Estate',
+                coordinate: '22.252499,114.15069900000003',
+                time: '43'
             },
             {
-                status: ['dropoff'],
-                station: 'Bus Stop, Tin Wan Shopping Centre',
-                time: ''
+                type: 'dropoff',
+                name: 'Bus Stop, Tin Wan Shopping Centre',
+                coordinate: '22.2498765,114.13910809999993',
+                time: '50'
             }]   
         }
     ]
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController) {
-    // new RouteModel('my checklist');
-    console.log(this.Routes);
+    //init object
+    Booking = {
+        referenceNumber: '',
+        date: '',
+        routeName: '',
+        alertTime: '',
+        pickup: '',
+        dropoff: '',
+        contact: '',
+        seatType: '',
+        contactNumber: '',
+        carerName: '',
+        carerContactNumber: '',
+        showRemider: true,
+        wheelchairBool: 0,
+        carerBool: 0
+    }
+
+    //time dropdown
+    Hours = [7,8,9,10,11,12,13,14,15,16,17];
+    Minute;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public storage: Storage, public modalCtrl: ModalController, private loadingCtrl: LoadingController) {
+    if (localStorage.booking) {
+        let booking = JSON.parse(localStorage.getItem("booking"))
+        this.Booking.contact = booking.contact;
+        this.Booking.contactNumber = booking.contactNumber;
+        this.Booking.alertTime= "88";
+    }
   }
 
   ionViewDidLoad() {
-    // console.log('ionViewDidLoad ReservationPage');
+    console.log('ionViewDidLoad ReservationPage');
+    console.log(new Date().toISOString());
+
+    //set default selected date to date now
+    this.Booking.date = new Date().toISOString();
+
   }
 
-  onPickupChange(){
-    // console.log("asd");
+  onRouteChange(routeName){
+    this.selectedRoute = this.Routes.find( route => route.name == routeName );
+    console.log(this.selectedRoute);
+    console.log(this.selectedRoute.stations);
+
+    this.Booking.pickup = '';
+    this.Booking.dropoff = '';
+    this.selectedRoutePickupStations = [];
+    this.selectedRouteDropoffStations = [];
+    this.selectedRoute.stations.forEach( station => {
+        if (station.type == 'pickup' || station.type == 'pickup/dropoff')
+            this.selectedRoutePickupStations.push(station)
+            console.log('Hahahha biii', this.selectedRoutePickupStations);
+    })
+
+    this.selectedRoute.stations.forEach( station => {
+        if (station.type == 'dropoff' || station.type == 'pickup/dropoff')
+            this.selectedRouteDropoffStations.push(station)
+    })
   }
 
-  onBookNow() {
-      console.log('haha');
-      const alert = this.alertCtrl.create({
-          title: 'Booking Successful',
-          subTitle: 'Reference Number: 00001',
-          buttons: [
-              {
-                  text: 'Check the booking',
-                  handler: data => {
-                      console.log('Back to homepage');
-                    }
-                },
-                {
-                    text: 'Go back to homepage',
-                    handler: data => {
-                        console.log('Check the booking');
-                        this.navCtrl.popToRoot();
-                    }
-                }
-            ]
+  onPickupChange(pickupStation) {
+    this.Booking.alertTime = '';
+    this.selectedPickUpStation = this.selectedRoutePickupStations.find( pickup => pickup.name === pickupStation);
+    this.Minute = this.selectedPickUpStation.time;
+  }
+
+//   onBookNow(Booking) {
+//     this.referenceNumber++
+//     Booking.referenceNumber = this.referenceNumber; 
+
+//     //   console.log(this.booking);
+
+//         //   let newRoute = { finished: new Date().getTime(), path: this.trackedRoute };
+//   //   this.previousTracks.push(newRoute);
+//     this.showLoader();
+
+//     console.log('Booking =', Booking);
+
+//     // store data in localStorage
+//     Booking.date = this.date;
+//     localStorage.setItem("booking", JSON.stringify(Booking))
+//     this.showLoader();
+
+//     //
+//     const alert = this.alertCtrl.create({
+//         title: 'Booking Successful',
+//         subTitle: 'Reference Number:' + Booking.refNum,
+//         buttons: [
+//             {
+//                 text: 'Check the booking',
+//                 handler: data => {
+//                     console.log('Check the booking');
+//                     // this.showLoader();
+//                     this.presentBookingModal();
+                    
+//                     // this.showBookingAlert(Booking);
+//                 }
+//             },
+//             {
+//                 text: 'Go back to homepage',
+//                 handler: data => {
+//                     console.log('Back to homepage');
+//                     this.navCtrl.popToRoot();
+//                 }
+//             }
+//         ]
+//     });
+//     alert.present();
+//     }
+
+    presentBookingModal() {
+        let bookingModal = this.modalCtrl.create(
+            BookingModalPage);
+        bookingModal.present();
+    }
+
+    showLoader() {
+        const loader = this.loadingCtrl.create({
+            duration: 2000
         });
-        alert.present();
+        loader.present();
+    }
+
+    goToConfirmPage(Booking) {
+        console.log('hehe', this.Booking.pickup);
+        this.navCtrl.push(ConfirmationPage, {'Booking' : Booking});
+        console.log('push Booking to next page', Booking)
     }
 }

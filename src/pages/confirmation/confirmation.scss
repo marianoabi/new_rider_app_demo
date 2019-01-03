@@ -1,8 +1,4 @@
-.custom-label {
-    margin: 15px !important;
-}
-
-page-reservation {
+page-confirmation {
     .container{
         background-color: whitesmoke;
         font-size: 17px !important;
@@ -42,8 +38,11 @@ page-reservation {
             color: #3A6992;
         }
 
-        .custom-col {
-            padding: 5px 30px;
+        #green-check {
+            color: #69CA5E;
         }
+    }
+    #countdown {
+        color: red;
     }
 }

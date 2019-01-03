@@ -1,0 +1,33 @@
+page-booking-modal {
+    // height: 70% !important;
+    // width: 100% !important;
+
+    .container{
+        background-color: whitesmoke;
+        font-size: 17px !important;
+
+        .no-border-bottom {
+            .item-inner{
+                border-bottom: 0px !important;
+            }
+        }
+        .border-right{
+            border-right: 1px solid gray;
+        }
+
+        .icon {
+            color: #3A6992;
+        }
+
+        #goToHomeBtn {
+            width: 100%;
+            margin: 16px auto !important;
+            background-color:#5B8BC4;
+        }
+    }
+    
+    .modalBackBtn {
+        color: white;
+        background-color: white;
+    }
+}
