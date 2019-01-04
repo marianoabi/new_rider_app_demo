@@ -15,24 +15,21 @@
 <ion-content class='container' margin-top>
 
   <ion-item>
-    <!-- <ion-icon item-start name='calendar'></ion-icon> -->
     <img class='custom-icon' item-start src="../../assets/svg/orderform_calendar.svg" alt="">
 
     <ion-label>Date</ion-label>
-    <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="Booking.date" min= {{Booking.date}} max ={{maxDate}}></ion-datetime>
+    <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="Booking.date" min= {{minDate}} max ={{maxDate}}></ion-datetime>
   </ion-item>
 
   <ion-item>
-    <!-- <ion-icon item-start name='bus'></ion-icon> -->
     <img class='custom-icon' item-start src="../../assets/svg/orderform_route.svg" alt="">
     <ion-label>Route</ion-label>
     <ion-select interface="action-sheet" (ionChange)="onRouteChange(Booking.routeName)" [(ngModel)]="Booking.routeName">
-      <ion-option *ngFor = 'let route of Routes'>{{route.name}}</ion-option>
+      <ion-option *ngFor = 'let route of Routes; let i = index' [value]="route.name">{{i+1}} {{route.name}}</ion-option>
     </ion-select>
   </ion-item>
 
   <ion-item>
-    <!-- <ion-icon item-start name='pin'></ion-icon> -->
     <img class='custom-icon' item-start src="../../assets/svg/orderform_pickup.svg" alt="">
     <ion-label>Pickup Stop</ion-label>
     <!-- <ion-select *ngFor = 'let route of Routes' interface="action-sheet"> -->
@@ -45,7 +42,6 @@
   </ion-item>
 
   <ion-item>
-    <!-- <ion-icon item-start name='navigate'></ion-icon> -->
     <img class='custom-icon' item-start src="../../assets/svg/orderform_destination.svg" alt="">
     <ion-label>Dropoff Stop</ion-label>
     <ion-select disabled={{!Booking.routeName}} interface="action-sheet" [(ngModel)]="Booking.dropoff">
@@ -54,22 +50,18 @@
   </ion-item>
   
   <ion-item class="no-border-bottom" margin-bottom>
-    <!-- <ion-icon item-start name='time'></ion-icon> -->
     <img class='custom-icon' item-start src="../../assets/svg/orderform_shuttletime.svg" alt="">
     <ion-label>Shuttle Time</ion-label>
-    <!-- <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="Booking.time"></ion-datetime> -->
-    <ion-datetime disabled={{!Booking.pickup}} displayFormat="HH:mm" hourValues={{hours}} minuteValues={{minute}} min={{minTime}} [(ngModel)]="Booking.alertTime" (ionChange)='onChangeShuttleTime()'></ion-datetime>
+    <ion-datetime disabled="{{!Booking.pickup}}"  displayFormat="HH:mm" hourValues={{hours}} minuteValues={{minute}} min={{minTime}} [(ngModel)]="Booking.alertTime" (ionChange)='onChangeShuttleTime()' ></ion-datetime>
   </ion-item>
 
   <ion-item class="no-border-bottom" margin-bottom>
-    <!-- <ion-icon item-start name='heart'></ion-icon> -->
     <img class='custom-icon' item-start src="../../assets/svg/orderform_wheelchair_seat.svg" alt="">
     <ion-label>Wheelchair Seats</ion-label>
     <ion-checkbox item-end color="default" checked="false" [(ngModel)]="Booking.wheelchairBool"></ion-checkbox>
   </ion-item>
 
   <ion-item class="no-border-bottom">
-    <!-- <ion-icon item-start name='heart'></ion-icon> -->
     <img class='custom-icon' item-start src="../../assets/svg/orderform_carer.svg" alt="">
     <ion-label>Carer</ion-label>
     <ion-checkbox item-end color="default" checked="false" [(ngModel)]="Booking.carerBool"></ion-checkbox>

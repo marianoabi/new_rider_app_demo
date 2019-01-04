@@ -19,6 +19,7 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
 import { FirebaseProvider } from './../providers/firebase/firebase';
 import { ConfirmationPage } from '../pages/confirmation/confirmation';
+import { DatePipe } from '@angular/common';
 
 const firebaseConfig = {
   apiKey: "AIzaSyClT4eKkAOaKeP9Yk9VBI-C8pqeVr04gUw",
@@ -60,7 +61,8 @@ const firebaseConfig = {
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Geolocation,
-    FirebaseProvider
+    FirebaseProvider,
+    DatePipe
   ]
 })
 export class AppModule {}

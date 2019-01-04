@@ -61,6 +61,7 @@ export class ConfirmationPage {
   }
 
   onBookNow(Booking) {
+    this.navCtrl.popToRoot();
     this.showLoader();
     this.referenceNumber++
     Booking.referenceNumber = this.referenceNumber;
@@ -82,10 +83,9 @@ export class ConfirmationPage {
                 }
             },
             {
-                text: 'Go back to homepage',
+                text: 'Done',
                 handler: data => {
                     console.log('Back to homepage');
-                    this.navCtrl.popToRoot();
                 }
             }
         ]
@@ -94,6 +94,7 @@ export class ConfirmationPage {
   }
 
   presentBookingModal() {
+    clearInterval(this.timer);
     let bookingModal = this.modalCtrl.create(
         BookingModalPage);
     bookingModal.present();

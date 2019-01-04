@@ -14,7 +14,7 @@ export class HomePage {
   @ViewChild('map')mapElement: ElementRef;
   map: any;
 
-  destination = '222.270256, 114.1313781';
+  destination = '22.270256,114.1313781';
 
   Routes = [
     {
@@ -293,7 +293,7 @@ waypoints = [
       if (booking.showReminder) {
         const reminder = this.alertController.create({
             title: 'Reminder',
-            message: `You have an existing booking on ${booking.date} at ${booking.time} going to ${booking.dropoff} from ${booking.pickup} via ${booking.routeName}.` ,
+            message: `You have an existing booking on ${booking.date} at ${booking.alertTime} going to ${booking.dropoff} from ${booking.pickup} via ${booking.routeName}.` ,
             inputs: [
                 {
                     type: 'checkbox',
@@ -335,7 +335,7 @@ waypoints = [
 
     //configure map
     let mapOptions = {
-      zoom: 16,
+      zoom: 14,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       mapTypeControl: false,
       streetViewControl: false,
@@ -345,20 +345,20 @@ waypoints = [
     //initialize map
     let map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
 
-    // this.geolocation.getCurrentPosition().then(pos => {
-    //     let latLng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-    //     // let latLng = new google.maps.LatLng(14.5768, 121.0332);
-    //     map.setCenter(latLng);
-    //     map.setZoom(16);
-    //   }).catch((error) => {
-    //     console.log('Error getting location', error);
-    //   });
+    this.geolocation.getCurrentPosition().then(pos => {
+        let latLng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+        // let latLng = new google.maps.LatLng(14.5768, 121.0332);
+        map.setCenter(latLng);
+        map.setZoom(16);
+      }).catch((error) => {
+        console.log('Error getting location', error);
+      });
 
 
     // let map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-    let splitted = this.destination.split(',',2);
-    let latLng = new google.maps.LatLng(splitted[0],splitted[1]);
-    map.setCenter(latLng);
+    // let splitted = this.destination.split(',',2);
+    // let latLng = new google.maps.LatLng(splitted[0],splitted[1]);
+    // map.setCenter(latLng);
 
     //iterate to access routes
     for(i = 0; i < routes.length; i++) {

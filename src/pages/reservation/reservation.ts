@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ModalController, LoadingController } from 'ionic-angular';
-
+import { DatePipe } from '@angular/common';
 import { BookingModalPage } from '../booking-modal/booking-modal';
 import { Storage } from '@ionic/storage';
 
@@ -273,6 +273,7 @@ export class ReservationPage {
     minute;
 
     dateNow;
+    minDate;
     maxDate;
     maxDateString;
     minTime;
@@ -281,7 +282,9 @@ export class ReservationPage {
     wheelchairRandNum;
     nonWheelchairRandNum;
     
-    constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public storage: Storage, public modalCtrl: ModalController, private loadingCtrl: LoadingController) {  
+    timeIsEnabled = true;
+
+    constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public storage: Storage, public modalCtrl: ModalController, private loadingCtrl: LoadingController, public datePipe: DatePipe) {  
         this.Booking.routeName = 'Chi Fu/Wah Fu';
         this.Booking.pickup = 'Bus Terminal, Chi Fu Fa Yuen';
         this.Booking.dropoff = 'Block K, Queen Mary Hospital';
@@ -291,47 +294,87 @@ export class ReservationPage {
 
     async ionViewDidLoad() {
         console.log('ionViewDidLoad ReservationPage');
-        console.log(new Date().toISOString());
+        console.log(new Date());
 
         //set default selected date to date now
-        this.Booking.date = new Date().toISOString();
-        console.log('asd',this.Booking.date);
+        this.Booking.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+
+        this.minDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');  
         this.maxDate = new Date();
         this.maxDate.setDate(this.maxDate.getDate() + 7);
-        this.maxDate = this.maxDate.toISOString();
+        this.maxDate = this.datePipe.transform(this.maxDate, 'yyyy-MM-dd');  
 
-        this.minTime = new Date();
-        this.minTime.setHours(this.minTime.getHours() + 2);
-        this.minTime = this.minTime.toISOString();
-
-        console.log('date', this.Booking.date);
+        console.log(this.Booking.date, this.maxDate, this.minTime);
 
         await this.loadData();
     }
 
     async loadData() {
-        let i;
-        let j;
-        for (i=0; i<this.Routes.length; i++) {
-            this.selectedRoute = this.Routes[i];
-            console.log(this.selectedRoute);
-            this.selectedRoute.stations.forEach(station => {
-                if (station.type == 'pickup' || station.type == 'pickup/dropoff') {
-                    this.selectedRoutePickupStations.push(station);
-                } 
 
-                if (station.type =='dropoff' || station.type == 'pickup/dropoff') {
-                    this.selectedRouteDropoffStations.push(station);
-                }
+        this.selectedRoute = this.Routes.find( route => route.name === this.Booking.routeName )
+        
+        this.selectedRoute.stations.forEach( station => {
+            if (station.type == 'pickup' || station.type == 'pickup/dropoff') {
+                this.selectedRoutePickupStations.push(station)
 
                 if (station.name == 'Bus Terminal, Chi Fu Fa Yuen') {
-                    this.minute = station.time;
+                    this.minute = [parseInt(station.time)];
+                    this.minTime = new Date();
+                    let minZZ = this.minTime.getMinutes();
+
+                    console.log(minZZ, parseInt(station.time))
+
+                    if (minZZ > parseInt(station.time)) {
+                        this.minTime.setHours(this.minTime.getHours() + 3);
+                        this.minTime.setMinutes(0);
+                    } else {
+                        this.minTime.setHours(this.minTime.getHours() + 2);      
+                    }
+
+                    this.minTime = new Date(Date.UTC(this.minTime.getFullYear(), this.minTime.getMonth(), this.minTime.getDate(), this.minTime.getHours(), this.minTime.getMinutes())).toISOString();
+                    console.log('abibe', this.minTime);
                 }
-            });
-        }
+            }
+        })
+
+        this.selectedRoute.stations.forEach( station => {
+            if (station.type == 'dropoff' || station.type == 'pickup/dropoff')
+                this.selectedRouteDropoffStations.push(station)
+        })
+        // let i;
+        // let j;
+        // for (i=0; i<this.Routes.length; i++) {
+        //     this.selectedRoute = this.Routes[i];
+        //     console.log(this.selectedRoute);
+        //     this.selectedRoute.stations.forEach(station => {
+        //         if (station.type == 'pickup' || station.type == 'pickup/dropoff') {
+        //             this.selectedRoutePickupStations.push(station);
+        //         } 
+
+        //         if (station.type =='dropoff' || station.type == 'pickup/dropoff') {
+        //             this.selectedRouteDropoffStations.push(station);
+        //         }
+
+        //         if (station.name == 'Bus Terminal, Chi Fu Fa Yuen') {
+        //             this.minute = [station.time];
+
+        //             this.minTime = new Date();
+        //             let minZZ = this.minTime.getMinutes();
+        //             if (minZZ > parseInt(this.minute)) {
+        //                 this.minTime.setHours(this.minTime.getHours() + 3);      
+
+        //             } else {
+        //                 this.minTime.setHours(this.minTime.getHours() + 2);      
+        //             }
+
+        //             this.minTime = new Date(Date.UTC(this.minTime.getFullYear(), this.minTime.getMonth(), this.minTime.getDate(), this.minTime.getHours(), this.minTime.getMinutes())).toISOString();
+        //         }
+        //     });
+        // }
         console.log('hehe', this.selectedRoutePickupStations);
         console.log('haha', this.selectedRouteDropoffStations);
-        console.log('huhu', this.minute)
+        console.log('huhu', this.minute);
+        console.log('hihe', this.minTime);
     }
 
     onRouteChange(routeName){
@@ -361,7 +404,7 @@ export class ReservationPage {
             this.minute = '';
             this.Booking.alertTime = '';
             this.selectedPickUpStation = this.selectedRoutePickupStations.find( pickup => pickup.name === pickupStation);
-            this.minute = this.selectedPickUpStation.time;
+            this.minute = [this.selectedPickUpStation.time];
         }
     }
 
@@ -442,8 +485,8 @@ export class ReservationPage {
         this.wheelchairRandNum = '-';
         console.log(this.validation)
         if (this.validation()) {
-            this.wheelchairRandNum = Math.floor(Math.random() * Math.floor(7)).toString();
-            this.nonWheelchairRandNum = Math.floor(Math.random() * Math.floor(14)).toString();
+            this.wheelchairRandNum = Math.floor(Math.random() * Math.floor(5)).toString();
+            this.nonWheelchairRandNum = Math.floor(Math.random() * Math.floor(9)).toString();
         }
     }
 
@@ -453,4 +496,17 @@ export class ReservationPage {
         }
         return true;
     }
+
+    // shutterTimeValidator() {
+    //     console.log('hoooy',this.minTime)
+    //     if (parseInt(this.minTime.getHours()) > 17) {
+    //         // this.timeIsEnabled = false;
+    //         let alert = this.alertCtrl.create({
+    //             title: '',
+    //             subTitle: '',
+    //             buttons: ['Okay']
+    //         })
+    //         alert.present();
+    //     }
+    // }
 }
