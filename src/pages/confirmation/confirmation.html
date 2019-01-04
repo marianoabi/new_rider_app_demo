@@ -16,30 +16,36 @@
 <ion-content class='container' margin-top>
 
   <ion-item class="no-border-bottom" margin-bottom text-wrap>
-    <ion-icon id='green-check' item-start name='checkmark-circle'></ion-icon>
-    <ion-label>Your seat already reserved. Please confirm passenger information within <span id='countdown'>10 mins 0 seconds</span> to confirm final booking.</ion-label>
+    <!-- <ion-icon id='green-check' item-start name='checkmark-circle'></ion-icon> -->
+    <img class='custom-icon' item-start src="../../assets/svg/confirmpage_success_lockseat.svg" alt="" />
+    <ion-label>Your seat already reserved. Please confirm passenger information within <span id='countdown'>{{min}} mins {{secCounter}} seconds</span> to confirm final booking.</ion-label>
   </ion-item>
 
   <ion-label class='custom-label'>Passenger Information</ion-label>
 
   <ion-item>
-    <ion-icon item-start name='contact'></ion-icon>
+    <!-- <ion-icon item-start name='contact'></ion-icon> -->
+    <img class='custom-icon' item-start src="../../assets/svg/confirmpage_name.svg" alt="" />
     <ion-input placeholder='Name' [(ngModel)]="Booking.contact"></ion-input>
   </ion-item>
   <ion-item class='no-border-bottom'>
-    <ion-icon item-start name='call'></ion-icon>
+    <!-- <ion-icon item-start name='call'></ion-icon> -->
+    <img class='custom-icon' item-start src="../../assets/svg/confirmpage_phone.svg" alt="" />
+
     <ion-input placeholder='Contact number' [(ngModel)]="Booking.contactNumber"></ion-input>
 </ion-item>
 
 <ion-label class='custom-label'>Carer</ion-label>
 
 <ion-item>
-  <ion-icon item-start name='contacts'></ion-icon>
+  <!-- <ion-icon item-start name='contacts'></ion-icon> -->
+  <img class='custom-icon' item-start src="../../assets/svg/confirmpage_name.svg" alt="" />
   <ion-input placeholder='Carer Name' [(ngModel)]="Booking.carerName"></ion-input>
 </ion-item>
 
 <ion-item class="no-border-bottom">
-  <ion-icon item-start name='call'></ion-icon>
+  <!-- <ion-icon item-start name='call'></ion-icon> -->
+  <img class='custom-icon' item-start src="../../assets/svg/confirmpage_phone.svg" alt="" />
   <ion-input placeholder='Carer Contact Number' [(ngModel)]="Booking.carerContactNumber"></ion-input>
 </ion-item>
 

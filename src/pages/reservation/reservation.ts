@@ -20,14 +20,14 @@ import { ConfirmationPage } from '../confirmation/confirmation';
 })
 export class ReservationPage {
 
-  //init varibales
-  selectedRoute = { name: '', stations: []};
-  selectedRoutePickupStations = [];
-  selectedRouteDropoffStations = [];
-  selectedPickUpStation = {time: '' };
+    //init varibales
+    selectedRoute = { name: '', stations: []};
+    selectedRoutePickupStations = [];
+    selectedRouteDropoffStations = [];
+    selectedPickUpStation = {time: '' };
 
-  //data
-  Routes = [
+    //data
+    Routes = [
         {
         name:'Shek Pai Wan/Aberdeen',
         stations:[
@@ -260,114 +260,154 @@ export class ReservationPage {
 
     //init object
     Booking = {
-        referenceNumber: '',
         date: '',
         routeName: '',
         alertTime: '',
         pickup: '',
         dropoff: '',
-        contact: '',
-        seatType: '',
-        contactNumber: '',
-        carerName: '',
-        carerContactNumber: '',
-        showRemider: true,
-        wheelchairBool: 0,
-        carerBool: 0
+        seatType: ''
     }
 
     //time dropdown
-    Hours = [7,8,9,10,11,12,13,14,15,16,17];
-    Minute;
+    hours = [7,8,9,10,11,12,13,14,15,16,17];
+    minute;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public storage: Storage, public modalCtrl: ModalController, private loadingCtrl: LoadingController) {
-    if (localStorage.booking) {
-        let booking = JSON.parse(localStorage.getItem("booking"))
-        this.Booking.contact = booking.contact;
-        this.Booking.contactNumber = booking.contactNumber;
-        this.Booking.alertTime= "88";
+    dateNow;
+    maxDate;
+    maxDateString;
+    minTime;
+    minTimeString;
+
+    wheelchairRandNum;
+    nonWheelchairRandNum;
+    
+    constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public storage: Storage, public modalCtrl: ModalController, private loadingCtrl: LoadingController) {  
+        this.Booking.routeName = 'Chi Fu/Wah Fu';
+        this.Booking.pickup = 'Bus Terminal, Chi Fu Fa Yuen';
+        this.Booking.dropoff = 'Block K, Queen Mary Hospital';
+        this.wheelchairRandNum = '-';
+        this.nonWheelchairRandNum = '-';
     }
-  }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ReservationPage');
-    console.log(new Date().toISOString());
+    async ionViewDidLoad() {
+        console.log('ionViewDidLoad ReservationPage');
+        console.log(new Date().toISOString());
 
-    //set default selected date to date now
-    this.Booking.date = new Date().toISOString();
+        //set default selected date to date now
+        this.Booking.date = new Date().toISOString();
+        console.log('asd',this.Booking.date);
+        this.maxDate = new Date();
+        this.maxDate.setDate(this.maxDate.getDate() + 7);
+        this.maxDate = this.maxDate.toISOString();
 
-  }
+        this.minTime = new Date();
+        this.minTime.setHours(this.minTime.getHours() + 2);
+        this.minTime = this.minTime.toISOString();
 
-  onRouteChange(routeName){
-    this.selectedRoute = this.Routes.find( route => route.name == routeName );
-    console.log(this.selectedRoute);
-    console.log(this.selectedRoute.stations);
+        console.log('date', this.Booking.date);
 
-    this.Booking.pickup = '';
-    this.Booking.dropoff = '';
-    this.selectedRoutePickupStations = [];
-    this.selectedRouteDropoffStations = [];
-    this.selectedRoute.stations.forEach( station => {
-        if (station.type == 'pickup' || station.type == 'pickup/dropoff')
-            this.selectedRoutePickupStations.push(station)
-            console.log('Hahahha biii', this.selectedRoutePickupStations);
-    })
+        await this.loadData();
+    }
 
-    this.selectedRoute.stations.forEach( station => {
-        if (station.type == 'dropoff' || station.type == 'pickup/dropoff')
-            this.selectedRouteDropoffStations.push(station)
-    })
-  }
+    async loadData() {
+        let i;
+        let j;
+        for (i=0; i<this.Routes.length; i++) {
+            this.selectedRoute = this.Routes[i];
+            console.log(this.selectedRoute);
+            this.selectedRoute.stations.forEach(station => {
+                if (station.type == 'pickup' || station.type == 'pickup/dropoff') {
+                    this.selectedRoutePickupStations.push(station);
+                } 
 
-  onPickupChange(pickupStation) {
-    this.Booking.alertTime = '';
-    this.selectedPickUpStation = this.selectedRoutePickupStations.find( pickup => pickup.name === pickupStation);
-    this.Minute = this.selectedPickUpStation.time;
-  }
+                if (station.type =='dropoff' || station.type == 'pickup/dropoff') {
+                    this.selectedRouteDropoffStations.push(station);
+                }
 
-//   onBookNow(Booking) {
-//     this.referenceNumber++
-//     Booking.referenceNumber = this.referenceNumber; 
+                if (station.name == 'Bus Terminal, Chi Fu Fa Yuen') {
+                    this.minute = station.time;
+                }
+            });
+        }
+        console.log('hehe', this.selectedRoutePickupStations);
+        console.log('haha', this.selectedRouteDropoffStations);
+        console.log('huhu', this.minute)
+    }
 
-//     //   console.log(this.booking);
+    onRouteChange(routeName){
+        this.selectedRoute = this.Routes.find( route => route.name == routeName );
+        console.log(this.selectedRoute);
+        console.log(this.selectedRoute.stations);
 
-//         //   let newRoute = { finished: new Date().getTime(), path: this.trackedRoute };
-//   //   this.previousTracks.push(newRoute);
-//     this.showLoader();
+        this.Booking.pickup = '';
+        this.Booking.dropoff = '';
+        this.selectedRoutePickupStations = [];
+        this.selectedRouteDropoffStations = [];
+        this.minute = '';
+        this.selectedRoute.stations.forEach( station => {
+            if (station.type == 'pickup' || station.type == 'pickup/dropoff')
+                this.selectedRoutePickupStations.push(station)
+                console.log('Hahahha biii', this.selectedRoutePickupStations);
+        })
 
-//     console.log('Booking =', Booking);
+        this.selectedRoute.stations.forEach( station => {
+            if (station.type == 'dropoff' || station.type == 'pickup/dropoff')
+                this.selectedRouteDropoffStations.push(station)
+        })
+    }
 
-//     // store data in localStorage
-//     Booking.date = this.date;
-//     localStorage.setItem("booking", JSON.stringify(Booking))
-//     this.showLoader();
+    onPickupChange(pickupStation) {
+        if (pickupStation) {
+            this.minute = '';
+            this.Booking.alertTime = '';
+            this.selectedPickUpStation = this.selectedRoutePickupStations.find( pickup => pickup.name === pickupStation);
+            this.minute = this.selectedPickUpStation.time;
+        }
+    }
 
-//     //
-//     const alert = this.alertCtrl.create({
-//         title: 'Booking Successful',
-//         subTitle: 'Reference Number:' + Booking.refNum,
-//         buttons: [
-//             {
-//                 text: 'Check the booking',
-//                 handler: data => {
-//                     console.log('Check the booking');
-//                     // this.showLoader();
-//                     this.presentBookingModal();
-                    
-//                     // this.showBookingAlert(Booking);
-//                 }
-//             },
-//             {
-//                 text: 'Go back to homepage',
-//                 handler: data => {
-//                     console.log('Back to homepage');
-//                     this.navCtrl.popToRoot();
-//                 }
-//             }
-//         ]
-//     });
-//     alert.present();
-//     }
+    //   onBookNow(Booking) {
+    //     this.referenceNumber++
+    //     Booking.referenceNumber = this.referenceNumber; 
+
+    //     //   console.log(this.booking);
+
+    //         //   let newRoute = { finished: new Date().getTime(), path: this.trackedRoute };
+    //   //   this.previousTracks.push(newRoute);
+    //     this.showLoader();
+
+    //     console.log('Booking =', Booking);
+
+    //     // store data in localStorage
+    //     Booking.date = this.date;
+    //     localStorage.setItem("booking", JSON.stringify(Booking))
+    //     this.showLoader();
+
+    //     //
+    //     const alert = this.alertCtrl.create({
+    //         title: 'Booking Successful',
+    //         subTitle: 'Reference Number:' + Booking.refNum,
+    //         buttons: [
+    //             {
+    //                 text: 'Check the booking',
+    //                 handler: data => {
+    //                     console.log('Check the booking');
+    //                     // this.showLoader();
+    //                     this.presentBookingModal();
+                        
+    //                     // this.showBookingAlert(Booking);
+    //                 }
+    //             },
+    //             {
+    //                 text: 'Go back to homepage',
+    //                 handler: data => {
+    //                     console.log('Back to homepage');
+    //                     this.navCtrl.popToRoot();
+    //                 }
+    //             }
+    //         ]
+    //     });
+    //     alert.present();
+    //     }
 
     presentBookingModal() {
         let bookingModal = this.modalCtrl.create(
@@ -383,8 +423,34 @@ export class ReservationPage {
     }
 
     goToConfirmPage(Booking) {
-        console.log('hehe', this.Booking.pickup);
-        this.navCtrl.push(ConfirmationPage, {'Booking' : Booking});
-        console.log('push Booking to next page', Booking)
+        console.log('asdfg', this.Booking.alertTime)
+        if (this.validation()) {
+            this.navCtrl.push(ConfirmationPage, {'Booking' : Booking});
+            console.log('push Booking to next page', Booking)
+        } else {
+            const invalidAlert = this.alertCtrl.create({
+                title: 'Invalid',
+                subTitle: 'Please fill all required fields.',
+                buttons: ['Okay']
+            });
+            invalidAlert.present();
+        }
+    }
+
+    onChangeShuttleTime() {
+        this.wheelchairRandNum = '-';
+        this.wheelchairRandNum = '-';
+        console.log(this.validation)
+        if (this.validation()) {
+            this.wheelchairRandNum = Math.floor(Math.random() * Math.floor(7)).toString();
+            this.nonWheelchairRandNum = Math.floor(Math.random() * Math.floor(14)).toString();
+        }
+    }
+
+    validation() {
+        if (!this.Booking.alertTime) {
+            return false;
+        }
+        return true;
     }
 }

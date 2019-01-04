@@ -14,7 +14,7 @@ export class HomePage {
   @ViewChild('map')mapElement: ElementRef;
   map: any;
 
-  destination = '22.24991, 114.15923299999997';
+  destination = '222.270256, 114.1313781';
 
   Routes = [
     {
@@ -289,7 +289,8 @@ waypoints = [
       let booking = JSON.parse(localStorage.getItem("booking"))
       
       // show reminder
-      if (booking.showRemider) {
+      console.log('ASDFGH',booking)
+      if (booking.showReminder) {
         const reminder = this.alertController.create({
             title: 'Reminder',
             message: `You have an existing booking on ${booking.date} at ${booking.time} going to ${booking.dropoff} from ${booking.pickup} via ${booking.routeName}.` ,
@@ -310,7 +311,7 @@ waypoints = [
                 text: 'Agree',
                 handler: () => {
                   console.log('Agree clicked');
-                    booking.showRemider = false;
+                    booking.showReminder = false;
                     localStorage.setItem('booking', JSON.stringify(booking));
                 }
               }
@@ -334,7 +335,7 @@ waypoints = [
 
     //configure map
     let mapOptions = {
-      zoom: 14,
+      zoom: 16,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       mapTypeControl: false,
       streetViewControl: false,

@@ -2,6 +2,11 @@
     margin: 15px !important;
 }
 
+.custom-icon {
+    height: 23px;
+    width: 23px;
+}
+
 page-reservation {
     .container{
         background-color: whitesmoke;
@@ -15,18 +20,20 @@ page-reservation {
         .seat-type-table {
             .table-icons{
                 background-color: #C0D2E7;
-                height:30px;
-
-            }
-            .seat-label {
-                background-color: whitesmoke;
-                text-indent: 5px;
-            }
-            .table-content{
-                background-color: #CEE1F4;
-            }
-            .seat-no{
-                font-size: 25px
+                height:50px;
+                .custom-col{
+                    padding-left: 20px;
+                    .av-count{
+                        color:red;
+                        font-size: 40px;
+                        line-height: 40px;
+                        margin-left: 20px;
+                    }
+                    .seat-label {
+                        margin-left: 8px;
+                        font-size: 12px;
+                    }
+                }   
             }
         }
         .no-border-bottom {
@@ -42,8 +49,12 @@ page-reservation {
             color: #3A6992;
         }
 
-        .custom-col {
-            padding: 5px 30px;
-        }
+        // .custom-col {
+        //     padding: 5px 30px;
+        // }
+    }
+    .wc-icon{
+        height: 32px;
+        width: 32px;
     }
 }
