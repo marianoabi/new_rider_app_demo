@@ -184,6 +184,48 @@ export class ReservationPage {
                 name: 'Block K, Queen Mary Hospital',
                 coordinate: '22.270256,114.1313781',
                 time: '10'
+            },
+            {
+                type: 'dropoff',
+                name: 'Bus Stop, Block 1 Chi Fu Fa Yuen',
+                coordinate: '',
+                time: '20'
+            },
+            {
+                type: 'dropoff',
+                name: 'Bus Terminal, Chi Fu Fa Yuen',
+                coordinate: '',
+                time: '21'
+            },
+            {
+                type: 'dropoff',
+                name: 'Wah Lok House, Wah Fu Estate',
+                coordinate: '',
+                time: '26'
+            },
+            {
+                type: 'dropoff',
+                name: 'Wah Mei House, Wah Fu Estate',
+                coordinate: '',
+                time: '27'
+            },
+            {
+                type: 'dropoff',
+                name: 'Waterfall Bay Park, Wah Fu Estate',
+                coordinate: '',
+                time: '28'
+            },
+            {
+                type: 'dropoff',
+                name: 'Bus Terminal, Wah Fu (2) Estate',
+                coordinate: '',
+                time: '29'
+            },
+            {
+                type: 'dropoff',
+                name: 'Wah Hing House, Wah Fu Estate',
+                coordinate: '',
+                time: '30'
             }]   
         },
         {
@@ -301,7 +343,7 @@ export class ReservationPage {
 
         this.minDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');  
         this.maxDate = new Date();
-        this.maxDate.setDate(this.maxDate.getDate() + 7);
+        this.maxDate.setDate(this.maxDate.getDate() + 6);
         this.maxDate = this.datePipe.transform(this.maxDate, 'yyyy-MM-dd');  
 
         console.log(this.Booking.date, this.maxDate, this.minTime);
