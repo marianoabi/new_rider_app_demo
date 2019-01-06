@@ -350,10 +350,15 @@ waypoints = [
         // let latLng = new google.maps.LatLng(14.5768, 121.0332);
         map.setCenter(latLng);
         map.setZoom(16);
+
+        var marker = new google.maps.Marker({
+            position: map.getCenter()
+        });
+    
+        marker.setMap(map);
       }).catch((error) => {
         console.log('Error getting location', error);
       });
-
 
     // let map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
     // let splitted = this.destination.split(',',2);
