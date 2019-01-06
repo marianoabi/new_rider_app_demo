@@ -2,34 +2,14 @@
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
-      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+        crossorigin="anonymous">
     </button>
     <ion-title class='configureNavBar'>Rider App Demo</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <!-- <h3>Ionic Menu Starter</h3>
-
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
-
-  <button ion-button secondary menuToggle>Toggle Menu</button> -->
-  <!-- <div> -->
-    <div #map id='map'></div>
-
-    <!-- <ion-list>
-        <ion-item-sliding *ngFor="let item of routeList">
-          <ion-item>
-            {{ item.$name }}
-          </ion-item>
-          <ion-item-options side="right">
-            <button ion-button color="danger" icon-only (click)="removeItem(item.$key)"><ion-icon name="trash"></ion-icon></button>
-          </ion-item-options>
-        </ion-item-sliding>
-      </ion-list> -->
-
-    <button id='btnBook' ion-button (click) = 'onBookButtonClick()'>Book a trip</button>
-<!-- </div> -->
+  <div #map id='map'></div>
+  <button id='btnBook' ion-button (click)='onBookButtonClick()'>Book a trip</button>
 </ion-content>

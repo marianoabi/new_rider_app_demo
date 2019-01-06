@@ -16,22 +16,16 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 export class BookingModalPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
-    
+
   }
   Booking = JSON.parse(localStorage.getItem("booking"));
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad BookingModalPage');
-    
+
   }
 
-  // dismiss() {
-  //   this.viewCtrl.dismiss();
-  // }
-
   goToHome() {
-        this.viewCtrl.dismiss();
-
-    // this.navCtrl.popToRoot();
+    this.viewCtrl.dismiss();
   }
 }

@@ -83,10 +83,7 @@ export class ConfirmationPage {
                 }
             },
             {
-                text: 'Done',
-                handler: data => {
-                    console.log('Back to homepage');
-                }
+                text: 'Done'
             }
         ]
     });
