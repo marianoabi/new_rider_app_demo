@@ -393,7 +393,9 @@ export class ReservationPage {
         alertTime: '',
         pickup: '',
         dropoff: '',
-        seatType: ''
+        seatType: '',
+        wheelchairBool: true,
+        carerBool: true
     }
 
     //time dropdown
@@ -580,11 +582,11 @@ export class ReservationPage {
 
         if (this.Booking.date != this.dateToday) {
             this.minTime.setHours(this.hour);
-            this.minTime.setMinutes(this.minute);
+            this.minTime.setMinutes([this.minute]);
             this.minTime = new Date(Date.UTC(this.minTime.getFullYear(), this.minTime.getMonth(), this.minTime.getDate(), this.minTime.getHours(), this.minTime.getMinutes())).toISOString();
         }
         else {
-            if (minZZ > parseInt(station.time)) {
+            if (minZZ > parseInt(this.minute)) {
                 this.minTime.setHours(this.minTime.getHours() + 3);
                 this.minTime.setMinutes(0);
             } else {
